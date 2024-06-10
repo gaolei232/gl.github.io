@@ -2,44 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
+    <meta name="viewport" content="width=>, initial-scale=1.0">
     <title>Document</title>
     <style>
-        #cc{
+        #all{            
+            height: auto;
             width: 1920px;
-            height: 1080px;
-            background-color: pink;
-            opacity: 1;
+            background-image: linear-gradient(to right,#b8cbb8 0%,#b8cbb8 0%,#b465da 0%,#cf6cc9 33%,#ee609c 66%,#ee609c 100%);
+            float: left;
         }
-        #word{
-            position:absolute;
-            left:600px;
-            top:50px;
+        #box{
+            width: 1000px;
             height:1000px;
-            font-size:80px;
-            color:cadetblue;
+            background-image: url("C://Users//86138//Desktop//a.jpeg");
+            background-size:contain;
         }
-        #pic{
-            position:absolute;
-            left:400px;
-            top:200px;
+        #ht{
+            height: 1080px;
+            position: relative;
+            left: 600px;
+            top: 300px;
         }
+        #wen{
+            text-decoration:overline;
+            text-transform:uppercase;
+            text-indent: 520px;
+        }
+        #ppx{
+            flex-direction: row;
+            display: flex;
+            color:black;
+            width: 1000px;
+            height: 1000px;
+            justify-content: flex-start;
+            }
+            #box2{
+                margin: 5px;
+            }
+            .box3{
+                margin: 10px;
+            }
+            .a{
+                width: 100px;
+                float: left;
+            }
     </style>
 </head>
 <body>
-    <div id = "cc"></div>
-    <div id = "word">welcome to my web</div>
-    <div id = pic>
-        <img src="C:\Users\86138\Desktop\aq1.png" alt="">
-        <input type="submit" id = "sub">
+    <div id = "all">
+    <div class = "a">
+    <a href="./test1.html" id = "aaa">
+        <h1>跳转</h1>
+    </a>
     </div>
-    <script>
-        var b = document.getElementById("pic");
-        var a = document.getElementById("sub");
-        a.onclick = function(){
-            clearInterval(tis);
-        }
-
-    </script>
+    <div id = "ht">
+        <img src="https://upload-bbs.miyoushe.com/upload/2021/08/03/271650852/9b835e8dc7b38c95bd355e41ab4e6860_6257656718998780124.gif?x-oss-process=image//auto-orient,0/interlace,1/format,gif" alt="">
+    </div>
+    <div id = "box">
+        <h1 id ="wen">照片 action box</h1>
+    </div>
+    <div id = "ppx">
+        <div id = "box2">
+            <img src="https://upload-bbs.miyoushe.com/upload/2021/08/03/271650852/6355e779d61519e7450231813c7a097c_1419627813998692764.gif?x-oss-process=image//auto-orient,0/interlace,1/format,gif" alt="" width="450px" height="320px">
+            <img src="https://upload-bbs.miyoushe.com/upload/2021/08/03/271650852/9b835e8dc7b38c95bd355e41ab4e6860_6257656718998780124.gif?x-oss-process=image//auto-orient,0/interlace,1/format,gif" alt="胡桃">
+        </div>
+        <div class = "box3">
+            <img src="https://upload-bbs.miyoushe.com/upload/2021/08/03/271650852/ebb8e0cd13e2b6ce44a42fe9787c8f9e_5564496519102152704.gif?x-oss-process=image//auto-orient,0/interlace,1/format,gif" alt="" width="510px">
+            <img src="https://upload-bbs.miyoushe.com/upload/2021/08/03/271650852/6933a0c3e74cd93b05bcb5f565cc4c7e_1004924344402393996.gif?x-oss-process=image//auto-orient,0/interlace,1/format,gif" alt="">
+            <img src="https://upload-bbs.miyoushe.com/upload/2021/08/03/271650852/aa8b57129b758ecc8f8c4e639495c6d5_2331963671223384618.gif?x-oss-process=image//auto-orient,0/interlace,1/format,gif" alt="">
+            <img src="https://upload-bbs.miyoushe.com/upload/2021/08/03/271650852/b0d34758b93a903f928d8066e055157c_6234586245280838433.gif?x-oss-process=image//auto-orient,0/interlace,1/format,gif" alt="" width="510px">
+        </div>
+    </div>
+    </div>
 </body>
 </html>
