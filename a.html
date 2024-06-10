@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #cc{
+            width: 1920px;
+            height: 1080px;
+            background-color: pink;
+            opacity: 1;
+        }
+        #word{
+            position:absolute;
+            left:600px;
+            top:50px;
+            height:1000px;
+            font-size:80px;
+            color:cadetblue;
+        }
+        #pic{
+            position:absolute;
+            left:400px;
+            top:200px;
+        }
+    </style>
+</head>
+<body>
+    <div id = "cc"></div>
+    <div id = "word">welcome to my web</div>
+    <div id = pic>
+        <img src="C:\Users\86138\Desktop\aq1.png" alt="">
+        <input type="submit" id = "sub">
+    </div>
+    <script>
+        var b = document.getElementById("pic");
+        var a = document.getElementById("sub");
+        a.onclick = function(){
+            clearInterval(tis);
+        }
+
+    </script>
+</body>
+</html>
