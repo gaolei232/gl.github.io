@@ -1,0 +1,400 @@
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<fstream>
+#include<memory>
+#include<string>
+#include<sstream>
+#include<iomanip>
+#include<windows.h>
+#include<cstdlib>
+#include<map>
+using namespace std;
+struct bank {
+    string zhang;//账号
+    string name;
+    double money;
+    string num;//身份证
+    string work;//工作单位
+    string phonenum;//
+    string home;//住址
+};
+typedef struct infor//账号密码
+{
+    int zhang;
+    string mi;
+    infor() {
+        zhang = 0; mi = "zero";
+    }
+}infor;
+class getin {
+public:
+    bool enum2()//登录页面
+    {
+        infor qq; bool s = false;
+        ifstream files; files.open("b.txt", ios::in);
+        printf("*******************************\n");
+        printf("您需要输入正确的账号密码才能登陆哦\n");
+        printf("请输入账号：\n"); cin >> qq.zhang;
+        printf("请输入密码：\n"); cin >> qq.mi;
+        infor base;
+        while (files >> base.zhang >> base.mi) {
+            if (base.zhang == qq.zhang && base.mi==qq.mi) {
+                s = true;
+                return s;
+            }
+        }
+        return s;
+    }
+    void enum3()//初始菜单
+    {
+        printf("欢迎来到银行管理系统初始版\n");
+        printf("********************\n");
+        printf("     1.登录\n");
+        printf("     2.注册\n");
+        printf("********************\n");
+    }
+
+    bool zhuce()//注册账号
+    {
+        infor namep;
+        printf("输入注册账号\n");
+        cin >> namep.zhang;
+        printf("输入注册密码\n");
+        cin >> namep.mi;
+        ifstream file; file.open("b.txt", ios::in); infor base;
+        while (file >> base.zhang >> base.mi) {
+            if (base.zhang == namep.zhang) {
+                return false;
+            }
+        }
+        ofstream files; files.open("b.txt", ios::app);
+        files << namep.zhang <<" "<< namep.mi<<" ";
+        cout << "注册成功！\n您的账号为:  " << namep.zhang << "密码为:  " << namep.mi << endl;
+        return true;
+    }
+
+};
+
+class Nums {
+public:
+    int nums;
+    Nums(int start = 1) : nums(start) {}
+    bool getnum(string it) {
+        ifstream file;
+        bool s = true;
+        file.open("a.txt", ios::in);
+        bank base;
+        while (file >> base.zhang >> base.name >> base.money >> base.num
+            >> base.work >> base.phonenum >> base.home) {
+            if (base.zhang == it) {
+                s = false;
+                return s;
+            }
+        }
+        return s;
+    }
+    string getnumber() {
+        ostringstream oss;
+        oss << setw(8) << setfill('0') << nums++;
+        if (getnum(oss.str()) == true) {
+            return oss.str();
+        }
+        else {
+            return  getnumber();
+        }
+    }
+};
+
+Nums num1;
+class banks  {
+public:
+    struct bank* bankman;
+    banks() {
+        bankman = (bank*)malloc(sizeof(bank));
+        if (bankman == nullptr) {
+            cout << "分配空间失败" << endl;
+            exit(1);
+        }
+    }
+    ~banks() {
+        free(bankman);
+    }
+    void start(vector<bank>& banker) {
+        bank a;
+        cout << "输入用户姓名、身份证号、单位、电话、地址\n" << endl;
+        cin.ignore(); // 清除前一次输入留下的换行符
+        cin >> a.name >> a.num >> a.work >> a.phonenum >> a.home;
+        a.zhang = num1.getnumber();
+        a.money = 0.0;
+        banker.push_back(a);
+        cout << "开户成功!" << endl;
+    }
+    bool insertmoney(vector<bank>& banker) {
+        bool res = true;
+        string fname;
+        cout << "输入要存款人账号" << endl;
+        cin >> fname;
+        auto it = find_if(banker.begin(), banker.end(), [fname](const bank& s)->bool {
+            return fname == s.zhang;
+            });
+        if (it == banker.end())
+        {
+            cout << "未存在此存款人 " << endl;
+            res = false;
+        }
+        else
+        {
+            int money;
+            cout << "输入存款金额" << endl; cin >> money;
+            it->money += money;
+        }
+        return res;
+    }
+    //存款函数
+    bool deletemoney(vector<bank>& banker) {
+        bool res = true;
+        string fname;
+        cout << "输入要取款人的账号" << endl;
+        cin >> fname;
+        auto it = find_if(banker.begin(), banker.end(), [fname](const bank& s)->bool {
+            return fname == s.zhang;
+            });
+        if (it == banker.end())
+        {
+            cout << "未存在此取款人 " << endl;
+            res = false;
+        }
+        else
+        {
+            int money;
+            cout << "输入取款金额" << endl; cin >> money;
+            if (it->money < money) {
+                cout << "钱不够" << endl;
+                res = false;
+            }
+            else {
+                it->money -= money;
+            }
+        }
+        return res;
+    };
+    //取款函数
+    bool movemoney(vector<bank>& banker)
+    {
+        bool res = true;
+        string fname;
+        cout << "输入本人的账号" << endl;
+        cin >> fname;
+        auto it = find_if(banker.begin(), banker.end(), [fname](const bank& s)->bool {
+            return fname == s.zhang;
+            });
+        if (it == banker.end())
+        {
+            cout << "未存在此人 " << endl;
+            res = false;
+        }
+        else
+        {
+            string zname;
+            cout << "输入转账人的账号" << endl;
+            cin >> zname;
+            auto is = find_if(banker.begin(), banker.end(), [zname](const bank& h)->bool {
+                return zname == h.zhang;
+                });
+            if (is == banker.end()) {
+                cout << "未存在此人 " << endl;
+                res = false;
+            }
+            else {
+                cout << "输入要转款的金额" << endl;
+                int m; cin >> m;
+                if (it->money < m) {
+                    cout << "你的钱不够" << endl;
+                    res = false;
+                }
+                else {
+                    it->money -= m; is->money += m;
+                }
+            }
+        }
+        return res;
+    };
+    void toshow(vector<bank>banker) {
+        bool res = true;
+        string ctrl;
+        cout << "1.根据姓名进行查询信息  2.根据账号进行查询信息" << endl;
+        cin >> ctrl;
+        if (ctrl == "1") {
+            string rname;
+            cout << "输入姓名" << endl;
+            cin >> rname;
+            auto it = find_if(banker.begin(), banker.end(), [rname](const bank& s)->bool {
+                return s.name == rname; }
+            );
+            if (it == banker.end()) {
+                cout << "未找到此人" << endl;
+            }
+            else {
+                bool res = tmcheck(banker, rname);
+                if (res == true) {
+                    cout << "账号:" << it->zhang << "     姓名:" << it->name << "     余额:" << it->money << "\n身份证号码:" << it->num << "     工作单位:  " << it->work << "     手机号码:" << it->phonenum << "     地址:" << it->home << endl;
+                }
+            }
+        }
+        else if (ctrl == "2") {
+            string rname;
+            cout << "输入账号" << endl;
+            cin >> rname;
+            auto it = find_if(banker.begin(), banker.end(), [rname](const bank& s)->bool {
+                return s.zhang == rname; }
+            );
+            if (it == banker.end()) {
+                cout << "未找到此人" << endl;
+            }
+            else {
+                cout << "账号:" << it->zhang << "     姓名:" << it->name << "     余额:" << it->money << "\n身份证号码:" << it->num << "     工作单位:  " << it->work << "     手机号码:" << it->phonenum << "     地址:" << it->home << endl;
+            }
+
+        }
+        else {
+            cout << "输入不合法" << endl;
+            
+        }
+
+    }
+    bool tmcheck(vector<bank>banker, string rname) {
+        bool res = true;
+        int date = 0;
+        for (int i = 0; i < banker.size(); i++) {
+            if (banker[i].name == rname) {
+                date++;
+            }
+        }
+        if (date > 1) {
+            res = false;
+            cout << "出现重名情况，请输入个人编号确定" << endl;
+            string rname;
+            cout << "输入账号" << endl;
+            cin >> rname;
+            auto it = find_if(banker.begin(), banker.end(), [rname](const bank& s)->bool {
+                return rname == s.zhang; }
+            );
+            if (it == banker.end()) {
+                cout << "未找到此人" << endl;
+            }
+            else if (res == false) {
+                cout << "账号:" << it->zhang << "     姓名:" << it->name << "     余额:" << it->money << "\n身份证号码:" << it->num << "     工作单位:  " << it->work << "     手机号码:" << it->phonenum << "     地址:" << it->home << endl;
+            }
+        }
+        else {
+            return res;
+        }
+        return res;
+    }
+    void deletebanker(vector<bank>& banker)
+    {
+        string rname;
+        cout << "输入要删除的账号" << endl;
+        cin >> rname;
+        auto it = find_if(banker.begin(), banker.end(), [rname](const bank& s)->bool {
+            return s.zhang == rname; }
+        );
+        if (it == banker.end()) {
+            cout << "未找到此人" << endl;
+        }
+        else {
+            banker.erase(it);
+            cout << "成功删除" << endl;
+        }
+    }
+};
+void write(vector<bank>& a) {
+    ofstream file;
+    file.open("a.txt", ofstream::trunc);
+    for (int i = 0; i < a.size(); i++) {
+        file << a[i].zhang << " " << a[i].name << " " << a[i].money << " " << a[i].num << " " << a[i].work << " " << a[i].phonenum << " " << a[i].home << endl;
+    }
+    file.close();
+}
+void read(vector<bank>& a) {
+    fstream file;
+    file.open("a.txt", ios::in | ios::out);
+    bank base;
+    while (file >> base.zhang >> base.name >> base.money >> base.num
+        >> base.work >> base.phonenum >> base.home) {
+        a.push_back(base);
+    }
+    file.close();
+}
+int main() {
+    getin log; int log1;
+    log.enum3();
+    cin >> log1;
+    if (log1 == 1) {
+        if (log.enum2()==true) {
+            system("cls");
+            vector<bank>a; banks newone;
+            read(a);
+            int ctrl = -1;
+            while (ctrl != 0) {
+                cout << "**********************************\n*   1.开户  2.销户  3.存款       *\n*   4.取款  5.转账  6.查询       *\n*   7.输出全部信息  0.退出系统   *\n**********************************" << endl;
+                cin >> ctrl;
+                switch (ctrl) {
+                case 1:
+                    system("cls"); newone.start(a); system("pause"); system("cls");
+                    break;
+                case 2:
+                    system("cls"); newone.deletebanker(a); system("pause"); system("cls");
+                    break;
+                case 3: {
+                    system("cls"); bool n = newone.insertmoney(a);
+                    if (n == true) { cout << "存款成功" << endl; }; system("pause"); system("cls");
+                    break;
+                }
+                case 4:
+                {
+                    system("cls"); bool n = newone.deletemoney(a);
+                    if (n == true) { cout << "取款成功" << endl; } system("pause"); system("cls");
+                }
+                break;
+                case 5:
+                {
+                    system("cls"); bool n = newone.movemoney(a);
+                    if (n == true) { cout << "转账成功" << endl; } system("pause"); system("cls");
+                }
+                break;
+                case 6:
+                    system("cls"); newone.toshow(a); system("pause"); system("cls");
+                    break;
+                case 7:
+                {
+                    system("cls");
+                    for (int i = 0; i < a.size(); i++)
+                    {
+                        cout << "账号:" << a[i].zhang << "     姓名:" << a[i].name << "     余额:" << a[i].money << "\n身份证号码:" << a[i].num << "     工作单位:  " << a[i].work << "     手机号码:" << a[i].phonenum << "     地址:" << a[i].home << endl;
+                    }system("pause"); system("cls");
+                }
+                }
+
+            }
+            write(a);
+        }
+        else {
+            cout << "账号或者密码错误，请重试" << endl;  system("pause"); system("cls");
+            main();
+        }
+    }
+    else if(log1==2) {
+        if (log.zhuce() == true) {
+            system("pause"); system("cls");
+            main();
+        }
+        else {
+            cout << "注册失败,账号重复" << endl;
+            system("pause"); system("cls");
+            main();
+        }
+    }
+    return 0;
+}
